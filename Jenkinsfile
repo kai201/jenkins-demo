@@ -4,18 +4,18 @@ pipeline {
     kubernetes { 
       cloud 'kubernetes'
       inheritFrom 'jnlp'
-      containerTemplate { name 'maven' image 'maven:3-alpine' ttyEnabled true command 'cat' }
+      containerTemplate { name 'maven' image 'maven:3-alpine' ttyEnabled true }
     }
   }
 
   stages {
     stage('代码编译打包') {
         steps {
-            container('maven') {
-                echo "代码编译打包....${env.BRANCH_NAME}" 
-                sh 'mvn -version'
-                sh 'mvn -B -DskipTests clean package'
-            }
+            // container('maven') {
+            //     echo "代码编译打包....${env.BRANCH_NAME}" 
+            //     sh 'mvn -version'
+            //     sh 'mvn -B -DskipTests clean package'
+            // }
         }
     }
 
