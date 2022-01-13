@@ -18,8 +18,8 @@ pipeline {
         steps {
             container('maven') {
                 echo "代码编译打包....${env.BRANCH_NAME}" 
-                sh 'mvn --version'
-                sh 'mvn -B -DskipTests clean package'
+                sh 'mvn -version'
+                // sh 'mvn -B -DskipTests clean package'
             }
         }
     }
