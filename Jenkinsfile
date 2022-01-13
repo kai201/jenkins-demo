@@ -4,10 +4,11 @@ pipeline {
     kubernetes { 
       cloud 'kubernetes'
       inheritFrom 'jnlp'
-      containerTemplate { 
+      containerTemplate {
         name 'maven'
         image 'maven:3-alpine'
         ttyEnabled true
+        command 'cat'
       }
     }
   }
