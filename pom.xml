@@ -13,6 +13,7 @@
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
 		<java.version>1.8</java.version>
+		<sonar.java.source>1.8</sonar.java.source>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
 		<spring.version>2.1.1.RELEASE</spring.version>
@@ -63,7 +64,15 @@
 		</dependencies>
 	</dependencyManagement>
 
-
+	<reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
+        </plugins>
+    </reporting>
     <repositories>
         <repository>
             <id>public</id>
