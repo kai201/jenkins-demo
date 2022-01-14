@@ -29,7 +29,7 @@ pipeline {
           withSonarQubeEnv('sonarqube') {
             container('maven') { 
               dir('examine'){
-                sh 'mvn sonar:sonar -dsonar.sourceEncoding=UTF-8'
+                sh 'mvn sonar:sonar -Dsonar.sourceEncoding=UTF-8'
               }
             }
           }
