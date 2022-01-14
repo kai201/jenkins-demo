@@ -28,10 +28,9 @@ pipeline {
         steps{
           withSonarQubeEnv('sonarqube') {
             container('maven') { 
-              sh 'mvn package sonar:sonar'
-              // dir('examine'){
-                
-              // }
+              dir('examine'){
+                sh 'mvn package sonar:sonar'
+              }
             }
           }
         }
