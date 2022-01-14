@@ -24,6 +24,16 @@ pipeline {
         }
     }
 
+    stage('代码分析') {
+        steps{
+          withSonarQubeEnv('sonarqube') {
+            container('maven') { 
+              sh 'mvn clean compile sonar:sonar'
+            }
+          }
+        }
+    }
+
     stage('提交镜像') {
         steps {
             container('kaniko') {
