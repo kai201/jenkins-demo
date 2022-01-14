@@ -19,7 +19,7 @@ pipeline {
             container('maven') {
                 echo "代码编译打包....${env.BRANCH_NAME}" 
                 sh 'mvn -version'
-                // sh 'mvn -B -DskipTests clean package'
+                sh 'mvn -B -DskipTests clean package'
             }
         }
     }
@@ -28,7 +28,9 @@ pipeline {
         steps{
           withSonarQubeEnv('sonarqube') {
             container('maven') { 
-              sh 'mvn clean compile sonar:sonar'
+              dir('examine'){
+                sh 'mvn clean compile sonar:sonar'
+              }
             }
           }
         }
