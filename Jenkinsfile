@@ -29,7 +29,7 @@ pipeline {
           withSonarQubeEnv('sonarqube') {
             container('maven') { 
               dir('examine'){
-                sh 'java --version'
+                sh 'java -version'
                 sh 'mvn package sonar:sonar'
               }
             }
