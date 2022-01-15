@@ -5,8 +5,8 @@ pipeline {
       cloud 'kubernetes'
       inheritFrom 'jnlp'
       containerTemplate {
-        name 'maven'
-        image 'maven:3-jdk-11'
+        name 'dotnet'
+        image 'mcr.microsoft.com/dotnet/sdk:5.0'
         ttyEnabled true
         command 'cat'
       }
@@ -16,10 +16,10 @@ pipeline {
   stages {
     stage('代码编译打包') {
         steps {
-            container('maven') {
-                echo "代码编译打包....${env.BRANCH_NAME}" 
-                sh 'mvn -version -Dsonar.branch.name=${env.BRANCH_NAME}'
-                // sh 'mvn -B -DskipTests clean package'
+            container('dotnet') {
+              echo "代码编译打包....${env.BRANCH_NAME}" 
+              sh 'dotnet --version'
+              sh 'dotnet build'
             }
         }
     }
@@ -27,12 +27,12 @@ pipeline {
     stage('代码分析') {
         steps{
           withSonarQubeEnv('sonarqube') {
-            container('maven') { 
-              // dir('examine'){
-              // }
-
-              sh 'java -version'
-              sh 'mvn package sonar:sonar'
+            container('dotnet') { 
+              sh 'dotnet --version'
+              sh 'dotnet tool install --global dotnet-sonarscanner'
+              sh 'dotnet sonarscanner begin /k:jenkins-demo /n:jenkins-demo /v:${Version}'
+              sh 'dotnet build'
+              sh 'dotnet sonarscanner end'
             }
           }
         }
@@ -42,8 +42,8 @@ pipeline {
         steps {
             container('kaniko') {
                 script { 
-                    echo "提交镜像....${env.BRANCH_NAME}" 
-                    sh "which kaniko"
+                  echo "提交镜像....${env.BRANCH_NAME}" 
+                  sh "which kaniko"
                 }
             }
         }
