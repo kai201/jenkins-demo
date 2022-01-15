@@ -33,7 +33,7 @@ pipeline {
               // dir('examine'){
               // }
               sh 'java -version'
-              sh "mvn package sonar:sonar"
+              sh "mvn package sonar:sonar -Dsonar.projectName=${SolutionName}"
               // sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
             }
           }
