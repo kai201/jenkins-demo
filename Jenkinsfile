@@ -6,7 +6,7 @@ pipeline {
       inheritFrom 'jnlp'
       containerTemplate {
         name 'maven'
-        image 'maven:3-alpine'
+        image 'maven:3-jdk-11-alpine'
         ttyEnabled true
         command 'cat'
       }
