@@ -1,4 +1,5 @@
 def Version = "v1.0.${BUILD_NUMBER}"
+def SolutionName = "${JOB_NAME}-${BRANCH_NAME}"
 pipeline {
   agent {
     kubernetes { 
@@ -17,6 +18,7 @@ pipeline {
     stage('代码编译打包') {
         steps {
             container('maven') {
+                echo "${SolutionName}"
                 echo "代码编译打包....${env.BRANCH_NAME}" 
                 sh "mvn -version"
                 // sh 'mvn -B -DskipTests clean package'
@@ -31,7 +33,8 @@ pipeline {
               // dir('examine'){
               // }
               sh 'java -version'
-              sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
+              sh "mvn package sonar:sonar"
+              // sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
             }
           }
         }

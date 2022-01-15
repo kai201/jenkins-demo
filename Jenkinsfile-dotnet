@@ -19,7 +19,7 @@ pipeline {
             container('dotnet') {
               echo "代码编译打包....${env.BRANCH_NAME}" 
               sh 'dotnet --version'
-              sh 'dotnet build'
+              // sh 'dotnet build'
             }
         }
     }
@@ -30,7 +30,8 @@ pipeline {
             container('dotnet') { 
               sh 'dotnet --version'
               sh 'dotnet tool install --global dotnet-sonarscanner'
-              sh 'dotnet sonarscanner begin /k:jenkins-demo /n:jenkins-demo /v:${Version}'
+              sh "dotnet sonarscanner begin /k:jenkins-demo /n:jenkins-demo /v:${Version}"
+              // sh "dotnet sonarscanner begin /k:jenkins-demo /n:jenkins-demo /v:${Version} -Dsonar.branch.name=${env.BRANCH_NAME}"
               sh 'dotnet build'
               sh 'dotnet sonarscanner end'
             }
