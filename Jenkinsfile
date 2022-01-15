@@ -1,5 +1,5 @@
 def Version = "v1.0.${BUILD_NUMBER}"
-def SolutionName = "${JOB_NAME}-${BRANCH_NAME}"
+def SolutionName = "${JOB_NAME.replace("/","-")}";
 pipeline {
   agent {
     kubernetes { 
