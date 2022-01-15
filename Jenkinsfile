@@ -18,7 +18,7 @@ pipeline {
         steps {
             container('maven') {
                 echo "代码编译打包....${env.BRANCH_NAME}" 
-                sh 'mvn -version -Dsonar.branch.name=${env.BRANCH_NAME}'
+                sh "mvn -version"
                 // sh 'mvn -B -DskipTests clean package'
             }
         }
@@ -30,9 +30,8 @@ pipeline {
             container('maven') { 
               // dir('examine'){
               // }
-
               sh 'java -version'
-              sh 'mvn package sonar:sonar'
+              sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
             }
           }
         }
