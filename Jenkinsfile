@@ -36,19 +36,7 @@ pipeline {
         }
     }
 
-    // stage('代码分析') {
-    //     steps{
-    //       withSonarQubeEnv('sonarqube') {
-    //         container('maven') { 
-    //           dir('java'){
-    //             sh 'java -version'
-    //             sh "mvn package sonar:sonar -Dsonar.projectName=${SolutionName} -Dsonar.projectKey=${SolutionName.replaceAll("/","_")}"
-    //             // sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
-    //           }
-    //         }
-    //       }
-    //     }
-    // }
+
 
     stage('代码分析-DotNet') {
         steps{
@@ -66,7 +54,19 @@ pipeline {
           }
         }
     }
-
+    stage('代码分析') {
+        steps{
+          withSonarQubeEnv('sonarqube') {
+            container('maven') { 
+              dir('java'){
+                sh 'java -version'
+                sh "mvn package sonar:sonar -Dsonar.projectName=${SolutionName} -Dsonar.projectKey=${SolutionName.replaceAll("/","_")}"
+                // sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
+              }
+            }
+          }
+        }
+    }
     stage('提交镜像') {
         steps {
             container('kaniko') {
