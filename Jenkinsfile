@@ -29,7 +29,8 @@ pipeline {
             container('maven') {
                 echo "${SolutionName}"
                 echo "代码编译打包....${env.BRANCH_NAME}" 
-                sh "mvn -version"
+                // sh "mvn -version"
+                sh "which mvn"
                 // sh 'mvn -B -DskipTests clean package'
             }
         }
