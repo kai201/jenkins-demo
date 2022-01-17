@@ -7,18 +7,17 @@ pipeline {
       cloud 'kubernetes'
       inheritFrom 'jnlp'
       containerTemplate {
-        name 'maven'
-        image 'maven:3-jdk-11'
-        ttyEnabled true
-        command 'cat'
-      }
-      containerTemplate {
         name 'dotnet'
         image 'mcr.microsoft.com/dotnet/sdk:5.0'
         ttyEnabled true
         command 'cat'
       }
-    
+      containerTemplate {
+        name 'maven'
+        image 'maven:3-jdk-11'
+        ttyEnabled true
+        command 'cat'
+      }
     }
   }
 
