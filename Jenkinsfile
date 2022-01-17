@@ -19,7 +19,7 @@ pipeline {
         ttyEnabled true
         command 'cat'
       }
-    }
+    
     }
   }
 
@@ -91,5 +91,5 @@ pipeline {
     failure { echo "failure"  }
     always  { echo "always"  }
   }
-  
+
 }
