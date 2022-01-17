@@ -36,35 +36,35 @@ pipeline {
         }
     }
 
-    stage('代码分析') {
-        steps{
-          withSonarQubeEnv('sonarqube') {
-            container('maven') { 
-              dir('java'){
-                sh 'java -version'
-                sh "mvn package sonar:sonar -Dsonar.projectName=${SolutionName} -Dsonar.projectKey=${SolutionName.replaceAll("/","_")}"
-                // sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
-              }
-            }
-          }
-        }
-    }
-
-    // stage('代码分析-DotNet') {
+    // stage('代码分析') {
     //     steps{
     //       withSonarQubeEnv('sonarqube') {
-    //         container('dotnet') { 
-    //           dir('dotnet'){
-    //             sh 'dotnet --version'
-    //             sh 'dotnet tool install --global dotnet-sonarscanner'
-    //             sh "dotnet sonarscanner begin /k:dotnet /n:dotnet /v:${Version}"
-    //             sh 'dotnet build'
-    //             sh 'dotnet sonarscanner end'
+    //         container('maven') { 
+    //           dir('java'){
+    //             sh 'java -version'
+    //             sh "mvn package sonar:sonar -Dsonar.projectName=${SolutionName} -Dsonar.projectKey=${SolutionName.replaceAll("/","_")}"
+    //             // sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
     //           }
     //         }
     //       }
     //     }
     // }
+
+    stage('代码分析-DotNet') {
+        steps{
+          withSonarQubeEnv('sonarqube') {
+            container('dotnet') { 
+              dir('dotnet'){
+                sh 'dotnet --version'
+                sh 'dotnet tool install --global dotnet-sonarscanner'
+                sh "dotnet sonarscanner begin /k:dotnet /n:dotnet /v:${Version}"
+                sh 'dotnet build'
+                sh 'dotnet sonarscanner end'
+              }
+            }
+          }
+        }
+    }
 
     stage('提交镜像') {
         steps {
