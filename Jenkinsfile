@@ -12,7 +12,6 @@ pipeline {
         ttyEnabled true
         command 'cat'
       }
-
       containerTemplate {
         name 'dotnet'
         image 'mcr.microsoft.com/dotnet/sdk:5.0'
@@ -24,13 +23,14 @@ pipeline {
   }
 
   stages {
+
     stage('代码编译打包') {
         steps {
             container('maven') {
                 echo "${SolutionName}"
                 echo "代码编译打包....${env.BRANCH_NAME}" 
                 // sh "mvn -version"
-                sh "which mvn"
+                // sh "which mvn"
                 // sh 'mvn -B -DskipTests clean package'
             }
         }
