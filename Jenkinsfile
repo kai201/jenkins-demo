@@ -50,21 +50,21 @@ pipeline {
         }
     }
 
-    stage('代码分析-DotNet') {
-        steps{
-          withSonarQubeEnv('sonarqube') {
-            container('dotnet') { 
-              dir('dotnet'){
-                sh 'dotnet --version'
-                sh 'dotnet tool install --global dotnet-sonarscanner'
-                sh "dotnet sonarscanner begin /k:dotnet /n:dotnet /v:${Version}"
-                sh 'dotnet build'
-                sh 'dotnet sonarscanner end'
-              }
-            }
-          }
-        }
-    }
+    // stage('代码分析-DotNet') {
+    //     steps{
+    //       withSonarQubeEnv('sonarqube') {
+    //         container('dotnet') { 
+    //           dir('dotnet'){
+    //             sh 'dotnet --version'
+    //             sh 'dotnet tool install --global dotnet-sonarscanner'
+    //             sh "dotnet sonarscanner begin /k:dotnet /n:dotnet /v:${Version}"
+    //             sh 'dotnet build'
+    //             sh 'dotnet sonarscanner end'
+    //           }
+    //         }
+    //       }
+    //     }
+    // }
 
     stage('提交镜像') {
         steps {
