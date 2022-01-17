@@ -8,7 +8,7 @@ pipeline {
       containerTemplate {
         name 'dotnet'
         // image 'mcr.microsoft.com/dotnet/sdk:5.0'
-        image 'mcr.microsoft.com/dotnet/core/sdk:3.1'
+        image 'yeohang/sonarscanner-dotnet-runtime:5.0'
         ttyEnabled true
         command 'cat'
       }
@@ -34,7 +34,6 @@ pipeline {
             container('dotnet') { 
               dir('dotnet'){
                 sh """
-                export PATH=$PATH:/root/.dotnet/tools && \
                 dotnet --version  && \
                 dotnet tool install --global dotnet-sonarscanner --version 5.4.1  && \
                 dotnet sonarscanner begin /k:dotnet /n:dotnet /v:${Version} && \
