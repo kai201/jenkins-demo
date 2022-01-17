@@ -8,7 +8,8 @@ pipeline {
       inheritFrom 'jnlp'
       containerTemplate {
         name 'dotnet'
-        image 'mcr.microsoft.com/dotnet/sdk:5.0'
+        // image 'mcr.microsoft.com/dotnet/sdk:5.0'
+        image 'mcr.microsoft.com/dotnet/core/sdk:3.0'
         ttyEnabled true
         command 'cat'
       }
