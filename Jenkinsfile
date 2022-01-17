@@ -56,6 +56,7 @@ pipeline {
             container('dotnet') { 
               dir('dotnet'){
                 sh 'dotnet --version'
+                sh 'export PATH="$PATH:/root/.dotnet/tools"'
                 sh 'dotnet tool install --global dotnet-sonarscanner'
                 sh "dotnet sonarscanner begin /k:dotnet /n:dotnet /v:${Version}"
                 sh 'dotnet build'
