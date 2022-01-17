@@ -18,7 +18,9 @@ pipeline {
   stages {
     stage('代码编译打包') {
         steps {
+            sh 'java --version'
             container('dotnet') {
+              sh 'java --version'
               echo "代码编译打包....${env.BRANCH_NAME}" 
               sh 'dotnet --version'
               // sh 'dotnet build'
