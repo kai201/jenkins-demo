@@ -1,6 +1,5 @@
 def Version = "v1.0.${BUILD_NUMBER}"
-def SolutionName = "${JOB_NAME.replace("/","-").replace("%2F","/")}"
-
+def SolutionName = "dotnet" //"${JOB_NAME.replaceAll("/","-").replaceAll("%2F","/")}";
 pipeline {
   agent {
     kubernetes { 
@@ -13,30 +12,19 @@ pipeline {
         ttyEnabled true
         command 'cat'
       }
-      containerTemplate {
-        name 'maven'
-        image 'maven:3-jdk-11'
-        ttyEnabled true
-        command 'cat'
-      }
     }
   }
 
   stages {
-
-    // stage('代码编译打包') {
-    //     steps {
-    //         container('maven') {
-    //             echo "${SolutionName}"
-    //             echo "代码编译打包....${env.BRANCH_NAME}" 
-    //             // sh "mvn -version"
-    //             // sh "which mvn"
-    //             // sh 'mvn -B -DskipTests clean package'
-    //         }
-    //     }
-    // }
-
-
+    stage('代码编译打包') {
+        steps {
+            container('dotnet') {
+              echo "代码编译打包....${env.BRANCH_NAME}" 
+              sh 'dotnet --version'
+              // sh 'dotnet build'
+            }
+        }
+    }
 
     stage('代码分析-DotNet') {
         steps{
@@ -56,25 +44,13 @@ pipeline {
           }
         }
     }
-    // stage('代码分析') {
-    //     steps{
-    //       withSonarQubeEnv('sonarqube') {
-    //         container('maven') { 
-    //           dir('java'){
-    //             sh 'java -version'
-    //             sh "mvn package sonar:sonar -Dsonar.projectName=${SolutionName} -Dsonar.projectKey=${SolutionName.replaceAll("/","_")}"
-    //             // sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
-    //           }
-    //         }
-    //       }
-    //     }
-    // }
+
     stage('提交镜像') {
         steps {
             container('kaniko') {
                 script { 
-                    echo "提交镜像....${env.BRANCH_NAME}" 
-                    sh "which kaniko"
+                  echo "提交镜像....${env.BRANCH_NAME}" 
+                  sh "which kaniko"
                 }
             }
         }
@@ -95,5 +71,4 @@ pipeline {
     failure { echo "failure"  }
     always  { echo "always"  }
   }
-
 }
