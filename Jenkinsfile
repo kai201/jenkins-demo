@@ -1,5 +1,6 @@
 def Version = "v1.0.${BUILD_NUMBER}"
-def SolutionName = "${JOB_NAME.replaceAll("/","-").replaceAll("%2F","/")}";
+def SolutionName = "${JOB_NAME.replace("/","-").replace("%2F","/")}"
+
 pipeline {
   agent {
     kubernetes { 
@@ -11,6 +12,14 @@ pipeline {
         ttyEnabled true
         command 'cat'
       }
+
+      containerTemplate {
+        name 'dotnet'
+        image 'mcr.microsoft.com/dotnet/sdk:5.0'
+        ttyEnabled true
+        command 'cat'
+      }
+    }
     }
   }
 
@@ -30,11 +39,27 @@ pipeline {
         steps{
           withSonarQubeEnv('sonarqube') {
             container('maven') { 
-              // dir('examine'){
-              // }
-              sh 'java -version'
-              sh "mvn package sonar:sonar -Dsonar.projectName=${SolutionName} -Dsonar.projectKey=${SolutionName.replaceAll("/","_")}"
-              // sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
+              dir('java'){
+                sh 'java -version'
+                sh "mvn package sonar:sonar -Dsonar.projectName=${SolutionName} -Dsonar.projectKey=${SolutionName.replaceAll("/","_")}"
+                // sh "mvn package sonar:sonar -Dsonar.branch.name=${env.BRANCH_NAME}"
+              }
+            }
+          }
+        }
+    }
+
+    stage('代码分析-DotNet') {
+        steps{
+          withSonarQubeEnv('sonarqube') {
+            container('dotnet') { 
+              dir('dotnet'){
+                sh 'dotnet --version'
+                sh 'dotnet tool install --global dotnet-sonarscanner'
+                sh "dotnet sonarscanner begin /k:dotnet /n:dotnet /v:${Version}"
+                sh 'dotnet build'
+                sh 'dotnet sonarscanner end'
+              }
             }
           }
         }
@@ -66,4 +91,5 @@ pipeline {
     failure { echo "failure"  }
     always  { echo "always"  }
   }
+  
 }

@@ -1,5 +1,5 @@
 def Version = "v1.0.${BUILD_NUMBER}"
-def SolutionName = "${JOB_NAME.replaceAll("/","-").replaceAll("%2F","/")}";
+def SolutionName = "dotnet" //"${JOB_NAME.replaceAll("/","-").replaceAll("%2F","/")}";
 pipeline {
   agent {
     kubernetes { 
@@ -29,12 +29,13 @@ pipeline {
         steps{
           withSonarQubeEnv('sonarqube') {
             container('dotnet') { 
-              sh 'dotnet --version'
-              sh 'dotnet tool install --global dotnet-sonarscanner'
-              sh "dotnet sonarscanner begin /k:${SolutionName.replaceAll("/","_")} /n:${SolutionName} /v:${Version}"
-              // sh "dotnet sonarscanner begin /k:jenkins-demo /n:jenkins-demo /v:${Version} -Dsonar.branch.name=${env.BRANCH_NAME}"
-              sh 'dotnet build'
-              sh 'dotnet sonarscanner end'
+              dir('dotnet'){
+                sh 'dotnet --version'
+                sh 'dotnet tool install --global dotnet-sonarscanner'
+                sh "dotnet sonarscanner begin /k:${SolutionName} /n:${SolutionName} /v:${Version}"
+                sh 'dotnet build'
+                sh 'dotnet sonarscanner end'
+              }
             }
           }
         }
