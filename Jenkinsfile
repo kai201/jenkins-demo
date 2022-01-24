@@ -67,10 +67,7 @@ pipeline {
 
             sshPublisher(publishers: [
                     sshPublisherDesc(configName: 'mengtu', transfers: [
-                        sshTransfer(execCommand: """
-                        cd www/java && \
-                        ls
-                        """)])
+                        sshTransfer(execCommand: 'ls && cd www/java')])
             ])
         }
     }
