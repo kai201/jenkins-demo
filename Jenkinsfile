@@ -67,7 +67,7 @@ pipeline {
 
             sshPublisher(publishers: [
                     sshPublisherDesc(configName: 'mengtu', transfers: [
-                        sshTransfer(execCommand: 'ls && cat TEST.md',remoteDirectory: 'www/java',sourceFiles:'README.md',removePrefix:'', usePty: true, useSftpForExec: true)
+                        sshTransfer(execCommand: 'ls \ cat TEST.md',remoteDirectory: 'www/java',sourceFiles:'README.md',removePrefix:'', usePty: true)
                     ])
             ])
         }
