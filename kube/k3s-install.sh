@@ -1,0 +1,2 @@
+export INSTALL_K3S_EXEC="server --write-kubeconfig-mode 644 --disable traefik --default-local-storage-path /data/storage"
+curl -sfL http://rancher-mirror.cnrancher.com/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn  sh -

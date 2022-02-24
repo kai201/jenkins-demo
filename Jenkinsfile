@@ -5,13 +5,13 @@ pipeline {
     kubernetes { 
       cloud 'kubernetes'
       inheritFrom 'jnlp'
-      // containerTemplate {
-      //   name 'dotnet'
-      //   // image 'mcr.microsoft.com/dotnet/sdk:5.0'
-      //   image 'yeohang/sonarscanner-dotnet-runtime:5.0'
-      //   ttyEnabled true
-      //   command 'cat'
-      // }
+      containerTemplate {
+        name 'dotnet'
+        // image 'mcr.microsoft.com/dotnet/sdk:5.0'
+        image 'yeohang/sonarscanner-dotnet-runtime:5.0'
+        ttyEnabled true
+        command 'cat'
+      }
     }
   }
 
@@ -19,30 +19,30 @@ pipeline {
     stage('代码编译打包') {
         steps {
             sh 'java --version'
-            // container('dotnet') {
-            //   sh 'java --version'
-            //   echo "代码编译打包....${env.BRANCH_NAME}" 
-            //   sh 'dotnet --version'
-            //   // sh 'dotnet build'
-            // }
+            container('dotnet') {
+              sh 'java --version'
+              echo "代码编译打包....${env.BRANCH_NAME}" 
+              sh 'dotnet --version'
+              // sh 'dotnet build'
+            }
         }
     }
 
     stage('代码分析-DotNet') {
         steps{
           withSonarQubeEnv('sonarqube') { 
-          //   container('dotnet') { 
-          //     dir('dotnet'){
-          //       sh """
-          //       export PATH=$PATH:/root/.dotnet/tools && \
-          //       dotnet --version  && \
-          //       dotnet tool install --global dotnet-sonarscanner --version 5.4.1  && \
-          //       dotnet sonarscanner begin /k:dotnet /n:dotnet /v:${Version} && \
-          //       dotnet build && \
-          //       dotnet sonarscanner end
-          //       """ 
-          //   }
-          // }
+            container('dotnet') { 
+              dir('dotnet'){
+                sh """
+                export PATH=$PATH:/root/.dotnet/tools && \
+                dotnet --version  && \
+                dotnet tool install --global dotnet-sonarscanner --version 5.4.1  && \
+                dotnet sonarscanner begin /k:dotnet /n:dotnet /v:${Version} && \
+                dotnet build && \
+                dotnet sonarscanner end
+                """ 
+            }
+          }
           }
         }
     }

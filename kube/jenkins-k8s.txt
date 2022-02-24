@@ -1,0 +1,5 @@
+registry.cn-beijing.aliyuncs.com/acs-sample/jenkins-slave-jnlp:3.14-1
+
+registry.cn-hangzhou.aliyuncs.com/acs/kaniko:v0.14.0
+
+registry.cn-hangzhou.aliyuncs.com/acs/kubectl:1.14.8

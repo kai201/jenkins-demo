@@ -63,6 +63,13 @@ spec:
         - mountPath: /opt/sonarqube/logs
           name: data
           subPath: logs
+        resources:
+          limits:
+            memory: 8Gi
+            cpu: 4.0
+          requests:
+            memory: 2Gi
+            cpu: 2.0
       volumes:
       - name: data
         persistentVolumeClaim:
