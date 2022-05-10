@@ -11,9 +11,10 @@ metadata:
 data:
   application.properties: |-
     server.port=7700
-    mysql.host=mysql.kube-rds:3306
-    mysql.username=root
-    mysql.password=123456
+    mysql.host=aws-database-main.chbs4jemphpn.rds.cn-northwest-1.amazonaws.com.cn:3306
+    mysql.schema=torna_docs
+    mysql.username=meb_db_admin
+    mysql.password=5lPehanazAmhtjqPMmME
 ---
 # --------------------------- Deployment ------------------- #
 apiVersion: apps/v1
@@ -53,10 +54,10 @@ spec:
           resources:
             limits:
               memory: 4Gi
-              cpu: 4.0
+              cpu: '4.0'
             requests:
               memory: 2Gi
-              cpu: 2.0
+              cpu: '2.0'
       terminationGracePeriodSeconds: 30
       volumes:
       - name: torna-config
@@ -88,9 +89,10 @@ kind: Ingress
 metadata:
   name: ingress-torna
   namespace: kube-ops
+  
 spec:
   rules:
-  - host: torna.i.com 
+  - host: apidocs.meb.im 
     http:
       paths:
       - path: /
